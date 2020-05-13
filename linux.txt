@@ -1,15 +1,66 @@
->> 解压缩
-zip -q -r [file_name].zip [path]
-tar czvf [file_name].tar [path]
+@ https://www.runoob.com/linux/linux-command-manual.html
 
->> 当前路径
+@ 只是记录一些平时常用的操作，要详细的细节的，带各种参数的请查看文档
+
+@ Linux命令总体可以分为：
+@ 1文件管理，2文档编辑，3文件传输，4磁盘管理，5磁盘维护，6网络通讯，7系统管理，8系统设置，9备份压缩，10设备管理，11其他指令
+
+>>> 解压缩
+zip [-q -r] fileName.zip filePath
+tar [czvf] fileName.tar filePath
+e.g: zip -q -r zc2020.zip zc/
+
+>>> 当前路径
 pwd
 
->>. ls 相关操作
-ls -a;
-ls -attr
+>> ls 相关操作
+ls [-a];
+ls [-attr]
 
->> 文件、文件夹相关操作
-touch file_name
-vim file_name
-mkdir file_folder
+>>> 文件、文件夹相关操作
+1.查看文件
+cat fileName
+tail fileName
+tail [-f] fileName # 实时追踪文件
+vim fileName # 调用vim编辑器
+
+2.创建文件、文件夹
+touch fileName # 新建文件
+mkdir [-p] dirName # 创建文件夹，-p 确保目录名称存在，不存在的就建一个。
+
+3.删除文件、文件夹
+rm -i fileName # 需要二次确认
+rm -rf dirName # 强制删除，可用于文件或非空文件夹
+rmdir dirName # 删除空文件夹
+
+4.重命名、拷贝、剪切
+mv [options] source dest
+mv [options] source... directory
+# -i: 若指定目录已有同名文件，则先询问是否覆盖旧文件;
+# -f: 在 mv 操作要覆盖某已有的目标文件时不给任何指示;
+
+mv 文件名 文件名 # 将源文件名改为目标文件名
+mv 文件名 目录名 # 将文件移动到目标目录
+mv 目录名 目录名 # 目标目录已存在，将源目录(包括子目录和文件)移动到目标目录
+mv 目录名 文件名 # 出错
+
+e.g: 
+mv a/* b/ # 将a目录移动到b目录，需要先执行显示隐藏文件命令，否则，隐藏文件以及隐藏文件夹不会被移动到新目录。
+mv a/a1.txt b/ # 将文件a1.txt移动到b文件夹下，不改名
+mv a/a1.txt b/b1.txt # 将文件a1.txt移动到b文件夹下， 并且改名为b1.txt
+
+>>> 进程相关process 
+top [-] [d delay] [q] [c] [S] [s] [i] [n] [b]
+top # 显示进程信息
+top -c # 显示完整命令
+top -i # 不显示任何闲置 (idle) 或无用 (zombie) 的行程
+
+ps -u root # 显示root进程用户信息
+ps -a # 当前用户，简略资讯(无STAT)
+ps fx # 当前用户，简略资讯(有STAT)
+ps au @ 当前用户，详细资讯
+ps aux # 所有用户，详细资讯
+
+who # 显示系统中有哪些用户正在该主机上
+who -u # 显示闲置时间
+who -q # 只显示登入系统的帐号名称和总人数
