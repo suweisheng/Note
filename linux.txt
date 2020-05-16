@@ -58,11 +58,73 @@ top -i # 不显示任何闲置 (idle) 或无用 (zombie) 的行程
 ps -u root # 显示root进程用户信息
 ps -a # 当前用户，简略资讯(无STAT)
 ps fx # 当前用户，简略资讯(有STAT)
-ps au @ 当前用户，详细资讯
+ps au # 当前用户，详细资讯
 ps aux # 所有用户，详细资讯
 
 who # 显示系统中有哪些用户正在该主机上
 who -u # 显示闲置时间
 who -q # 只显示登入系统的帐号名称和总人数
+
+>>> find命令
+find ./ -type f -size +10400k  # 查找当前路径下文件大小超过l00M的文件
+
+>>> grep命令
+
+grep [参数] fileName
+grep [参数] fileName > saveFileName
+
+
+参数：
+-A<显示行数> # 显示该行之后的内容
+-B<显示行数> # 显示该行之前的内容
+-C<显示行数> # 显示该行之前后的内容
+
+-c # 计算符合样式的列数
+-i # 忽略大小写
+-h # 不带文件名
+-H # 带文件名
+-v # 方向查找
+-n # 显示行号
+-r # 递归查找
+
+-E # 将样式为延伸的正则表达式来使用
+
+
+e.g:
+grep test *file     # 在当前目录中，查找后缀有 file 字样的文件中包含 test 字符串的文件
+grep test ./*.log | grep abc        # 在当前目录中，查找.log文件内有关键字test和abc，使用管道
+grep -r update /etc/acpi        # 以递归的方式查找符合条件(包含字符串"update")的文件
+grep -v test *test*     # 查找文件名中包含 test 的文件中不包含 test 的行
+grep -n '2019-10-24 00:01:11' *.log     # 查特定时间点日志，并显示行号
+
+find / -type f -name "*.log" | xargs grep "ERROR"       # 从根目录开始查找所有扩展名为 .log 的文本文件，并找出包含 "ERROR" 的行
+find . -name "*.in" | xargs grep "thermcontact"     # 从当前目录开始查找所有扩展名为 .in 的文本文件，并找出包含 "thermcontact" 的行
+find . -name 'Booth*.log'  | xargs grep "aa" > recored.log # 将日志写到 grep 结果写到 recored.log 文件
+
+grep -r UpShelves . | awk '{match($0, /(item_id)":([[:digit:]]+)/, a);match($0, /(guid)":"([[:alnum:]]+)"/, b); print a[1]"="a[2]", "b[1]"="b[2]}'
+
+
+>>> du 相关操作
+du fileName
+du filePath
+# 会显示指定的目录或文件所占用的磁盘空间
+
+参数：
+-s # 仅显示总计
+-h # 以K，M，G为单位，提高信息的可读性
+
+>>> sort 相关操作
+sort 
+-n 依照数值的大小排序
+-r 以相反的顺序来排序
+
+>>> su 相关操作
+su suweisheng # 切换用户
+
+>>> ssh 相关操作
+ssh suweisheng@192.168.170.1 # 远程连接
+
+
+
 
 
