@@ -1,0 +1,154 @@
+
+===================== MySql =====================
+mysql -h 127.0.0.1 -P4000 -u root -- 进入数据库
+
+mysql -h192.168.170.8 -P3306 -uhaojisheng -pwpx_Hjs45963
+
+mysql -h 主机地址 -P端口号 -u 用户名 -p 密码 -- 进入数据库（修改了端口号必须加-P，默认端口3306可以不加）
+
+
+show databases;	-- 显示所有数据库
+
+use zc_game7;	-- 进入/使用特定数据库
+
+show tables;	-- 显示所有表
+
+show table status from zc_game7;   -- 显示数据库中所有表的信息
+
+desc t_Role;	-- 查看表结构
+describe t_Role;-- 查看表结构
+explain t_Role;	-- 查看表结构
+show columns from t_Role; -- 查看表结构
+
+select * from t_Role;	-- 查询某个表所有数据
+select * from t_Role where uuid = '15000090' > tmp.sql;  -- 查询数据结果到 tem.sql文件
+select equip_part, bag from t_Role where uuid = '15000090' > tmp.sql -- 搜索角色指定字段数据
+select urs from t_Role where uuid='7000382';	-- 查询某个表的某个字段值
+
+delete from t_Player where urs = 1;  -- 清除某条数据
+delete from t_Player;  -- 清除表数据
+
+truncate table t_Player;  -- 清空表 数据
+
+alter table t_ServerCore add column last_question_id int; -- 增加表中的字段 (column可省略)
+alter table t_ServerCore drop column last_question_id; -- 删除表中的字段 (column可省略)
+
+update t_ServerCore set last_question_id=0; -- 更新表中某个字段的值
+update zc_game7.t_Role set name=(select name from zc_game16.t_Role where uuid='16000557') where uuid="7000826"; -- 更新表中某个字段的值
+
+drop database zc_game7; -- 删除整个数据库
+drop table t_Role; -- 删除表
+
+
+------------------------------------------------------------------------------------------------
+mysql -h192.168.170.1 -P3306 -uhaojisheng -pwpx_Hjs45963 -e "select * from t_BoothMarket" zc_game7 > tem.xls
+
+mysql -h192.168.170.1 -P3306 -uhaojisheng -pwpx_Hjs45963 -e "delete from t_BoothMarket" zc_game7
+
+mysql -h192.168.170.1 -P3306 -uhaojisheng -pwpx_Hjs45963 -e "update t_ServerCore set last_question_id=0" zc_game7
+
+mysql -h192.168.170.1 -P3306 -uhaojisheng -pwpx_Hjs45963 -e "select * from t_Questionnaire" zc_game7
+
+mysql -h 127.0.0.1 -P 4000 -u root -e "select * from t_Rank" zc_game7 > tmp.xls
+
+mysql -h 127.0.0.1 -P 4000 -u root -e "show tables" zc_game7
+
+mysql -h 127.0.0.1 -P 4000 -u root -e "drop database zc_game7" zc_game7
+
+mysql -h 127.0.0.1 -P 4000 -u root -e "select * from t_Rank" zc_game7
+
+mysql -h 127.0.0.1 -P 4000 -u root -e "truncate table t_OfflineCmd" zc_game7
+
+mysql -h 127.0.0.1 -P 4000 -u root -e "show table status from zc_pay;"
+
+mysql -h 127.0.0.1 -P 4000 -u root -e "show databases;"
+
+mysql -h 127.0.0.1 -P 4000 -u root -e "drop table t_OfflineCmd;delete from t_lua_schema where name = OfflineCmd; zc_game7
+
+------------------------------------------------------------------------------------------------
+exit -- 退出mysql命令
+quit -- 退出mysql命令
+\q -- 退出mysql命令
+\c -- 取消当前正在输入的命令
+
+========================================================
+./bin/skynet config/s7_city_1.lua  启动进程，不能关掉
+
+./bin/skynet config/s7_city_0.lua
+
+./bin/skynet config/s7_war_1.lua
+
+./bin/skynet config/s7_war_0.lua
+
+
+========================================================
+重新生成配置文件？
+cd zc/server/config.template/   -- 进入配置文件夹
+
+python generator.py 7		-- 运行
+
+python generator.py --global    -- 运行
+
+server/*.lua, lualib/*.lua, -/exceldata/*.lua, -sharedata/sproto/, -sharedata/exceldata/tools/*.lua -- sublime搜索路径
+========================================================
+echo $PS1 -- 改变linux颜色
+========================================================
+
+查看策划服
+1.连接到 192.168.170.8
+2.Username: waifu_oper Password: waifu_oper
+3.cd cehua
+4.sh11 文案1：sh15 策划1
+
+查看外服
+1.连接到 192.168.170.6
+2.Username: waifu_oper Password: waifu_oper
+3.远程连接
+    -- ssh haojisheng@182.61.57.26
+    -- ssh haojisheng@62.234.79.188
+    -- ssh haojisheng@152.136.125.148
+    -- ssh haojisheng@152.136.30.202
+    -- ssh haojisheng@182.61.16.228 -- 繁体服
+4.cd ../../data/zc/server/log/
+
+更新外服
+1.连接到 192.168.170.6
+2.cd sdk_test/server/
+3.cat readme -- 查看说明
+------
+1.热更新普通代码
+    直接修改相应代码文件
+2.热更新客户端服务端消息协议
+    a. 热更新node_base, 每个节点重新生成协议
+    b. 热更新sproto_msg_utils, 每个服务重新加载协议
+3.热更新数据
+    热更新相应的文件， 如果增加表还需要更新CSCommon.data_mgr
+
+##############################外服维护步骤
+ansible-playbook -i hosts.ini stop_all.yaml # 停服；在tools/deploy/目录运行
+sh export_server.sh ../export # 拷贝必要文件到expoert；在sever目录下运行
+python make_inventory.py > hosts.ini # 初始化用，一般不常用；在tools/deploy/目录运行
+ansible-playbook -i hosts.ini sync_code.yaml # 同步代码；在tools/deploy/目录运行
+ansible-playbook -i hosts.ini start_all.yaml # 开服；在tools/deploy/目录运行
+
+##############################tidb
+git clone https://github.com/pingcap/tidb.git $GOPATH/src/github.com/pingcap/tidb
+cd $GOPATH/src/github.com/pingcap/tidb
+make
+cd bin && ./tidb-server
+mysql -h 127.0.0.1 -P 4000 -u root -D test --prompt="tidb> "
+
+mysql -h 127.0.0.1 -P 3306 -u root -pwpxHJS_2017
+
+#################################ntpdate
+yum install ntp
+service ntpd start
+ntpdate time.windows.com
+    29 Dec 22:24:39 ntpdate[3805]: the NTP socket is in use, exiting
+service ntpd stop
+ntpdate cn.pool.ntp.org
+    29 Dec 14:26:50 ntpdate[3820]: step time server 42.96.167.209 offset -28703.604438 sec
+
+###############################samba
+关闭防火墙和selinux
+##############################外服维护步骤
